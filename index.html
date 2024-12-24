@@ -77,7 +77,7 @@
                 
                 // Generate a shareable link
                 const encodedWish = encodeURIComponent(wish);
-                const link = `${window.location.origin}?wish=${encodedWish}`;
+                const link = `${window.location.origin}${window.location.pathname}?wish=${encodedWish}`;
                 shareUrl.href = link;
                 shareUrl.textContent = link;
                 shareLinkDiv.style.display = 'block';
@@ -92,7 +92,11 @@
             const params = new URLSearchParams(window.location.search);
             const wish = params.get('wish');
             if (wish) {
-                document.body.innerHTML = `<h1>Merry Christmas!</h1><p>${decodeURIComponent(wish)}</p>`;
+                document.body.innerHTML = `
+                    <h1>Merry Christmas!</h1>
+                    <p>${decodeURIComponent(wish)}</p>
+                    <p><a href="${window.location.pathname}">Create Your Own Wish</a></p>
+                `;
             }
         };
     </script>
