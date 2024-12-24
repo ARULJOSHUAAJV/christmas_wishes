@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2638058644649336"
-     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Christmas Wishes</title>
@@ -10,115 +8,109 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-        }
-        .header {
-            background: #e63946;
-            color: white;
             text-align: center;
-            padding: 20px 0;
+            padding: 20px;
         }
         .container {
             max-width: 600px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            background: #fff;
             border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
         }
-        .form-group {
-            margin-bottom: 15px;
+        h1 {
+            color: #d9534f;
         }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-        .form-group textarea {
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .share-link {
+            margin-top: 20px;
+            display: none;
+        }
+        .share-link input {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        .btn {
-            background: #e63946;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background: #d62828;
-        }
-        .wishes {
-            margin-top: 20px;
-        }
-        .wish {
-            background: #f1f1f1;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-        .share-link {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #007bff;
-            word-wrap: break-word;
-        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Merry Christmas 🎄</h1>
-        <p>Share your Christmas wishes with the world!</p>
-    </div>
     <div class="container">
-        <form id="wishForm">
-            <div class="form-group">
-                <label for="wish">Your Wish</label>
-                <textarea id="wish" rows="4" placeholder="Write your Christmas wish here..." required></textarea>
-            </div>
-            <button type="submit" class="btn">Share Your Wish</button>
-        </form>
-        <div class="wishes" id="wishes"></div>
-        <div class="share-link" id="shareLink"></div>
+        <h1>🎄 Create Your Christmas Wish 🎄</h1>
+        <textarea id="wishInput" placeholder="Write your Christmas wish here..."></textarea>
+        <button onclick="generateLink()">Generate Shareable Link</button>
+        <div class="share-link" id="shareLink">
+            <p>Share this link with your friends:</p>
+            <input type="text" id="linkInput" readonly>
+            <button onclick="shareLink()">Share</button>
+        </div>
     </div>
 
     <script>
-        const form = document.getElementById('wishForm');
-        const wishesContainer = document.getElementById('wishes');
-        const shareLinkContainer = document.getElementById('shareLink');
-
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const wishText = document.getElementById('wish').value.trim();
-            if (wishText) {
-                // Display the wish
-                const wishElement = document.createElement('div');
-                wishElement.className = 'wish';
-                wishElement.textContent = wishText;
-                wishesContainer.appendChild(wishElement);
-
-                // Generate a shareable link
-                const baseUrl = window.location.href.split('?')[0];
-                const shareableUrl = `${baseUrl}?wish=${encodeURIComponent(wishText)}`;
-                shareLinkContainer.innerHTML = `Share this wish: <a href="${shareableUrl}" target="_blank">${shareableUrl}</a>`;
-
-                // Clear the textarea
-                document.getElementById('wish').value = '';
+        function generateLink() {
+            const wish = document.getElementById('wishInput').value.trim();
+            if (!wish) {
+                alert('Please write a wish before generating the link!');
+                return;
             }
-        });
 
-        // Display wish from URL if present
-        const urlParams = new URLSearchParams(window.location.search);
-        const sharedWish = urlParams.get('wish');
-        if (sharedWish) {
-            const wishElement = document.createElement('div');
-            wishElement.className = 'wish';
-            wishElement.textContent = decodeURIComponent(sharedWish);
-            wishesContainer.appendChild(wishElement);
+            const baseUrl = window.location.origin + window.location.pathname;
+            const encodedWish = encodeURIComponent(wish);
+            const shareableLink = `${baseUrl}?wish=${encodedWish}`;
+
+            document.getElementById('linkInput').value = shareableLink;
+            document.getElementById('shareLink').style.display = 'block';
         }
+
+        function shareLink() {
+            const linkInput = document.getElementById('linkInput').value;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Christmas Wish',
+                    text: 'Check out this Christmas wish I created!',
+                    url: linkInput
+                }).then(() => {
+                    alert('Link shared successfully!');
+                }).catch((error) => {
+                    alert('Error sharing the link: ' + error);
+                });
+            } else {
+                alert('Sharing is not supported on this browser. Please copy the link manually.');
+            }
+        }
+
+        // Display the wish if present in the URL
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const wish = urlParams.get('wish');
+            if (wish) {
+                document.body.innerHTML = `
+                    <div class="container">
+                        <h1>🎅 Merry Christmas! 🎅</h1>
+                        <p>${decodeURIComponent(wish)}</p>
+                    </div>
+                `;
+            }
+        };
     </script>
 </body>
 </html>
