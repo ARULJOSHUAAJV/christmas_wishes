@@ -3,102 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merry Christmas Wishes</title>
+    <title>Christmas Wishes</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f8f9fa;
-            color: #333;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
             padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
         h1 {
-            color: #d9534f;
+            color: #d32f2f;
         }
-        .card {
-            margin: 20px auto;
-            padding: 20px;
-            border: 2px solid #d9534f;
-            border-radius: 10px;
-            background: #fff;
-            width: 300px;
-        }
-        .input-group {
-            margin: 20px 0;
-        }
-        input {
-            padding: 10px;
+        input[type="text"] {
             width: 80%;
+            padding: 10px;
+            margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
         button {
-            padding: 10px 20px;
-            background-color: #d9534f;
+            background-color: #4CAF50;
             color: white;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
         button:hover {
-            background-color: #c9302c;
+            background-color: #45a049;
         }
-        .share-link {
+        .share-button {
             margin-top: 20px;
-            display: none;
         }
     </style>
 </head>
 <body>
-    <h1>Merry Christmas Wishes</h1>
-    <p>Enter a name to create a personalized greeting:</p>
-    <div class="card">
-        <div class="input-group">
-            <input type="text" id="nameInput" placeholder="Enter a name" />
-        </div>
-        <button onclick="generateWish()">Generate Wish</button>
-        <div id="wishOutput" class="output"></div>
-        <div class="share-link" id="shareLink">
-            <p>Share this link:</p>
-            <a id="shareUrl" href="#" target="_blank">Your Christmas Wish</a>
+    <div class="container">
+        <h1>Merry Christmas!</h1>
+        <p>Enter your name to send Christmas wishes to your friends!</p>
+        <input type="text" id="nameInput" placeholder="Enter your name">
+        <button onclick="createWish()">OK</button>
+        <div id="wishContainer" style="display:none;">
+            <p id="wishMessage"></p>
+            <button class="share-button" onclick="shareWish()">Share</button>
         </div>
     </div>
 
-    <script>
-        function generateWish() {
-            const name = document.getElementById('nameInput').value.trim();
-            const outputDiv = document.getElementById('wishOutput');
-            const shareLinkDiv = document.getElementById('shareLink');
-            const shareUrl = document.getElementById('shareUrl');
+    <audio id="rocketSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
 
-            if (name) {
-                const wish = `🎄 Merry Christmas, ${name}! 🎅 Wishing you joy, love, and happiness this holiday season!`;
-                outputDiv.innerHTML = `<p>${wish}</p>`;
-                
-                // Generate a shareable link
-                const encodedWish = encodeURIComponent(wish);
-                const link = `${window.location.origin}${window.location.pathname}?wish=${encodedWish}`;
-                shareUrl.href = link;
-                shareUrl.textContent = link;
-                shareLinkDiv.style.display = 'block';
-            } else {
-                outputDiv.innerHTML = `<p style="color: red;">Please enter a name!</p>`;
-                shareLinkDiv.style.display = 'none';
+    <script>
+        function createWish() {
+            const name = document.getElementById('nameInput').value;
+            if (name.trim() === '') {
+                alert('Please enter your name!');
+                return;
             }
+            const message = `Merry Christmas, ${name}! Share this joy with your friends!`;
+            document.getElementById('wishMessage').innerText = message;
+            document.getElementById('wishContainer').style.display = 'block';
         }
 
-        // Display the wish if accessed via a shared link
-        window.onload = function () {
-            const params = new URLSearchParams(window.location.search);
-            const wish = params.get('wish');
-            if (wish) {
-                document.body.innerHTML = `
-                    <h1>Merry Christmas!</h1>
-                    <p>${decodeURIComponent(wish)}</p>
-                    <p><a href="${window.location.pathname}">Create Your Own Wish</a></p>
-                `;
+        function shareWish() {
+            const sound = document.getElementById('rocketSound');
+            sound.play();
+
+            const message = document.getElementById('wishMessage').innerText;
+            const shareData = {
+                title: 'Christmas Wishes',
+                text: message,
+                url: 'https://your-christmas-wishes-site.com' // Replace with your website URL
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData)
+                    .then(() => console.log('Shared successfully!'))
+                    .catch((error) => console.log('Error sharing:', error));
+            } else {
+                alert('Sharing not supported on this browser.');
             }
-        };
+        }
     </script>
 </body>
 </html>
