@@ -1,137 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2638058644649336"
-     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Christmas Wishes</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fbc2eb);
-            animation: windy 5s infinite;
-            color: #000; /* Black text */
+        }
+        .header {
+            background: #e63946;
+            color: white;
             text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
+            padding: 20px 0;
         }
-
-        @keyframes windy {
-            0%, 100% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-        }
-
-        header {
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.3);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
-
-        header h1 {
-            font-size: 2.5em;
-            margin: 0;
-            color: #000;
+        .form-group {
+            margin-bottom: 15px;
         }
-
-        header h2 {
-            font-size: 1.5em;
-            margin: 10px 0;
-            color: #000;
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
         }
-
-        main {
-            padding: 20px;
-            text-align: center;
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-
-        .share-button {
-            display: inline-block;
-            margin: 20px auto;
-            padding: 15px 30px;
-            font-size: 1.2em;
-            color: #fff;
-            background: #ff6f61;
+        .btn {
+            background: #e63946;
+            color: white;
+            padding: 10px 15px;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
-            text-decoration: none;
-            transition: background 0.3s;
         }
-
-        .share-button:hover {
-            background: #e94e3b;
+        .btn:hover {
+            background: #d62828;
         }
-
-        .image-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        .wishes {
             margin-top: 20px;
         }
-
-        .image-container img {
-            width: 200px;
-            height: auto;
-            border-radius: 10px;
+        .wish {
+            background: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
         }
-
-        .image-container img:hover {
-            transform: scale(1.1);
-            transition: transform 0.3s ease;
+        .share-link {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #007bff;
+            word-wrap: break-word;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Merry Christmas!</h1>
-        <h2>Spread the Joy and Happiness</h2>
-    </header>
-
-    <main>
-        <p>"May this Christmas bring you love, joy, and warmth to cherish forever! Share the festive cheer with your loved ones."</p>
-        <button class="share-button" onclick="sharePage()">Share Wishes with Your Friends</button>
-        
-        <!-- Image Container for Santa and Christmas Tree -->
-        <div class="image-container">
-            <img src="https://i.pinimg.com/1200x/d3/da/16/d3da1684dd85d7ff19736181427a4373.jpg" alt="Santa Claus">
-        </div>
-    </main>
-
-    <audio id="rocketSound" src="rocket-sound.mp3" preload="auto"></audio>
+    <div class="header">
+        <h1>Merry Christmas 🎄</h1>
+        <p>Share your Christmas wishes with the world!</p>
+    </div>
+    <div class="container">
+        <form id="wishForm">
+            <div class="form-group">
+                <label for="wish">Your Wish</label>
+                <textarea id="wish" rows="4" placeholder="Write your Christmas wish here..." required></textarea>
+            </div>
+            <button type="submit" class="btn">Share Your Wish</button>
+        </form>
+        <div class="wishes" id="wishes"></div>
+        <div class="share-link" id="shareLink"></div>
+    </div>
 
     <script>
-        function sharePage() {
-            const url = window.location.href;
-            const text = `Check out this amazing Christmas wishes page! 🎄🎅`;
+        const form = document.getElementById('wishForm');
+        const wishesContainer = document.getElementById('wishes');
+        const shareLinkContainer = document.getElementById('shareLink');
 
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Christmas Wishes',
-                    text: text,
-                    url: url
-                }).then(() => {
-                    playRocketSound();
-                }).catch((error) => console.error('Error sharing:', error));
-            } else {
-                alert('Your browser does not support direct sharing. Copy the link below to share: ' + url);
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const wishText = document.getElementById('wish').value.trim();
+            if (wishText) {
+                // Display the wish
+                const wishElement = document.createElement('div');
+                wishElement.className = 'wish';
+                wishElement.textContent = wishText;
+                wishesContainer.appendChild(wishElement);
+
+                // Generate a shareable link
+                const baseUrl = window.location.href.split('?')[0];
+                const shareableUrl = `${baseUrl}?wish=${encodeURIComponent(wishText)}`;
+                shareLinkContainer.innerHTML = `Share this wish: <a href="${shareableUrl}" target="_blank">${shareableUrl}</a>`;
+
+                // Clear the textarea
+                document.getElementById('wish').value = '';
             }
-        }
+        });
 
-        function playRocketSound() {
-            const sound = document.getElementById('rocketSound');
-            sound.play();
+        // Display wish from URL if present
+        const urlParams = new URLSearchParams(window.location.search);
+        const sharedWish = urlParams.get('wish');
+        if (sharedWish) {
+            const wishElement = document.createElement('div');
+            wishElement.className = 'wish';
+            wishElement.textContent = decodeURIComponent(sharedWish);
+            wishesContainer.appendChild(wishElement);
         }
     </script>
 </body>
