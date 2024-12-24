@@ -11,7 +11,7 @@
             font-family: Arial, sans-serif;
             background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fbc2eb);
             animation: windy 5s infinite;
-            color: #000; /* Changed text color to black */
+            color: #000; /* Black text */
             text-align: center;
             display: flex;
             justify-content: center;
@@ -34,18 +34,19 @@
             background-color: rgba(0, 0, 0, 0.3);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             margin-bottom: 20px;
+            border-radius: 10px;
         }
 
         header h1 {
             font-size: 2.5em;
             margin: 0;
-            color: #000; /* Black text for the title */
+            color: #000;
         }
 
         header h2 {
             font-size: 1.5em;
             margin: 10px 0;
-            color: #000; /* Black text for the subtitle */
+            color: #000;
         }
 
         main {
@@ -70,6 +71,24 @@
         .share-button:hover {
             background: #e94e3b;
         }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .image-container img {
+            width: 200px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -81,6 +100,12 @@
     <main>
         <p>"May this Christmas bring you love, joy, and warmth to cherish forever! Share the festive cheer with your loved ones."</p>
         <button class="share-button" onclick="sharePage()">Share Wishes with Your Friends</button>
+        
+        <!-- Image Container for Santa and Christmas Tree -->
+        <div class="image-container">
+            <img src="https://example.com/santa-image.jpg" alt="Santa Claus">
+            <img src="https://example.com/christmas-tree-image.jpg" alt="Christmas Tree">
+        </div>
     </main>
 
     <audio id="rocketSound" src="rocket-sound.mp3" preload="auto"></audio>
