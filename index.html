@@ -11,8 +11,13 @@
             font-family: Arial, sans-serif;
             background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fbc2eb);
             animation: windy 5s infinite;
-            color: #fff;
+            color: #000; /* Changed text color to black */
             text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
         }
 
         @keyframes windy {
@@ -28,20 +33,24 @@
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.3);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
         }
 
         header h1 {
             font-size: 2.5em;
             margin: 0;
+            color: #000; /* Black text for the title */
         }
 
         header h2 {
             font-size: 1.5em;
             margin: 10px 0;
+            color: #000; /* Black text for the subtitle */
         }
 
         main {
             padding: 20px;
+            text-align: center;
         }
 
         .share-button {
