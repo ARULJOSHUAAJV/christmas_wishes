@@ -79,11 +79,14 @@
             const sound = document.getElementById('rocketSound');
             sound.play();
 
-            const message = document.getElementById('wishMessage').innerText;
+            const name = document.getElementById('nameInput').value;
+            const url = `${window.location.origin}${window.location.pathname}?name=${encodeURIComponent(name)}`;
+            const message = `Merry Christmas, ${name}! Share this joy with your friends! Check out my wish here: ${url}`;
+
             const shareData = {
                 title: 'Christmas Wishes',
                 text: message,
-                url: 'https://your-christmas-wishes-site.com' // Replace with your website URL
+                url: url
             };
 
             if (navigator.share) {
@@ -92,6 +95,10 @@
                     .catch((error) => console.log('Error sharing:', error));
             } else {
                 alert('Sharing not supported on this browser.');
+                // Fallback: Copy the URL to clipboard
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Link copied to clipboard!');
+                });
             }
         }
     </script>
