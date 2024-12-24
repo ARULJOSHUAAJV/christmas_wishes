@@ -6,100 +6,97 @@
     <title>Christmas Wishes</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f2f2f2;
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fbc2eb);
+            animation: windy 5s infinite;
+            color: #fff;
+            text-align: center;
         }
-        .container {
-            margin-top: 50px;
+
+        @keyframes windy {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        header {
             padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.3);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
         }
-        h1 {
-            color: #d32f2f;
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
         }
-        input[type="text"] {
-            width: 80%;
-            padding: 10px;
+
+        header h2 {
+            font-size: 1.5em;
             margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
         }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+
+        main {
+            padding: 20px;
         }
-        button:hover {
-            background-color: #45a049;
-        }
+
         .share-button {
-            margin-top: 20px;
+            display: inline-block;
+            margin: 20px auto;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: #fff;
+            background: #ff6f61;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .share-button:hover {
+            background: #e94e3b;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <header>
         <h1>Merry Christmas!</h1>
-        <p>Enter your name to send Christmas wishes to your friends!</p>
-        <input type="text" id="nameInput" placeholder="Enter your name">
-        <button onclick="createWish()">OK</button>
-        <div id="wishContainer" style="display:none;">
-            <p id="wishMessage"></p>
-            <button class="share-button" onclick="shareWish()">Share</button>
-        </div>
-    </div>
+        <h2>Spread the Joy and Happiness</h2>
+    </header>
 
-    <audio id="rocketSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+    <main>
+        <p>"May this Christmas bring you love, joy, and warmth to cherish forever! Share the festive cheer with your loved ones."</p>
+        <button class="share-button" onclick="sharePage()">Share Wishes with Your Friends</button>
+    </main>
+
+    <audio id="rocketSound" src="rocket-sound.mp3" preload="auto"></audio>
 
     <script>
-        function createWish() {
-            const name = document.getElementById('nameInput').value;
-            if (name.trim() === '') {
-                alert('Please enter your name!');
-                return;
-            }
-            const message = `Merry Christmas, ${name}! Share this joy with your friends!`;
-            document.getElementById('wishMessage').innerText = message;
-            document.getElementById('wishContainer').style.display = 'block';
-        }
-
-        function shareWish() {
-            const sound = document.getElementById('rocketSound');
-            sound.play();
-
-            const name = document.getElementById('nameInput').value;
-            const url = `${window.location.origin}${window.location.pathname}?name=${encodeURIComponent(name)}`;
-            const message = `Merry Christmas, ${name}! Share this joy with your friends! Check out my wish here: ${url}`;
-
-            const shareData = {
-                title: 'Christmas Wishes',
-                text: message,
-                url: url
-            };
+        function sharePage() {
+            const url = window.location.href;
+            const text = `Check out this amazing Christmas wishes page! 🎄🎅`;
 
             if (navigator.share) {
-                navigator.share(shareData)
-                    .then(() => console.log('Shared successfully!'))
-                    .catch((error) => console.log('Error sharing:', error));
+                navigator.share({
+                    title: 'Christmas Wishes',
+                    text: text,
+                    url: url
+                }).then(() => {
+                    playRocketSound();
+                }).catch((error) => console.error('Error sharing:', error));
             } else {
-                alert('Sharing not supported on this browser.');
-                // Fallback: Copy the URL to clipboard
-                navigator.clipboard.writeText(url).then(() => {
-                    alert('Link copied to clipboard!');
-                });
+                alert('Your browser does not support direct sharing. Copy the link below to share: ' + url);
             }
+        }
+
+        function playRocketSound() {
+            const sound = document.getElementById('rocketSound');
+            sound.play();
         }
     </script>
 </body>
